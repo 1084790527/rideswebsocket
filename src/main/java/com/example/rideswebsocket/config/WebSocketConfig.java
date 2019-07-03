@@ -1,4 +1,4 @@
-package com.example.rideswebsocket.webSocketConfig;
+package com.example.rideswebsocket.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

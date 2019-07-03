@@ -1,4 +1,4 @@
-package com.example.rideswebsocket.redisService;
+package com.example.rideswebsocket.util;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;

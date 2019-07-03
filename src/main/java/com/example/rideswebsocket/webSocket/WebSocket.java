@@ -1,13 +1,10 @@
-package com.example.rideswebsocket.webSocketConfig;
+package com.example.rideswebsocket.webSocket;
 
 import com.alibaba.fastjson.JSONObject;
 import com.example.rideswebsocket.bean.SocketUserData;
-import com.example.rideswebsocket.redisService.RedisUtil;
+import com.example.rideswebsocket.util.RedisUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
 import javax.websocket.*;

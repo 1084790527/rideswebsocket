@@ -1,8 +1,8 @@
 package com.example.rideswebsocket.testController;
 
 import com.alibaba.fastjson.JSONObject;
-import com.example.rideswebsocket.redisService.RedisUtil;
-import com.example.rideswebsocket.webSocketConfig.WebSocket;
+import com.example.rideswebsocket.util.RedisUtil;
+import com.example.rideswebsocket.webSocket.WebSocket;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.websocket.server.PathParam;
 import java.util.ArrayList;
 import java.util.List;
 
