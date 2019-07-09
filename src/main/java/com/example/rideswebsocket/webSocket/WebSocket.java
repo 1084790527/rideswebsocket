@@ -2,6 +2,7 @@ package com.example.rideswebsocket.webSocket;
 
 import com.alibaba.fastjson.JSONObject;
 import com.example.rideswebsocket.bean.SocketUserData;
+import com.example.rideswebsocket.util.OkHttpUtils;
 import com.example.rideswebsocket.util.RedisUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -12,6 +13,7 @@ import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.CopyOnWriteArraySet;
 
 /**
@@ -47,6 +49,8 @@ public class WebSocket {
     private String name;
 
     private SocketUserData socketUserData;
+
+    private String uuid= UUID.randomUUID().toString().replaceAll("-","");
 
 
 
@@ -109,6 +113,15 @@ public class WebSocket {
 //                continue;
 //            }
 //        }
+        List<Object> objects=redisUtil.lGet("service",0,-1);
+        for (Object o:objects){
+            log.info("轮询服务器"+o);
+            JSONObject jsonObject=new JSONObject();
+            jsonObject.put("name",this.name);
+            jsonObject.put("message",message);
+            OkHttpUtils.postJsonParams("http://"+String.valueOf(o)+"/websocketSend",jsonObject.toJSONString());
+        }
+
     }
 
     public static synchronized void onSend(String message){

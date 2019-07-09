@@ -1,19 +1,59 @@
 package com.example.rideswebsocket;
 
+import com.example.rideswebsocket.util.RedisUtil;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.core.env.Environment;
 import org.springframework.data.redis.core.RedisTemplate;
+
+import java.util.List;
 
 @SpringBootApplication
 public class RideswebsocketApplication {
+	private static Log log= LogFactory.getLog(RideswebsocketApplication.class);
 
 //	public RideswebsocketApplication(RedisTemplate<String, String> redisTemplate){
 //
 //	}
 
-	public static void main(String[] args) {
-		SpringApplication.run(RideswebsocketApplication.class, args);
+//	@Autowired
+	private static Environment env;
+
+	@Autowired
+	public void getEnv(Environment env){
+		RideswebsocketApplication.env=env;
 	}
+
+	public static void main(String[] args) {
+		log.info("--------------------程序开始运行--------------------");
+		SpringApplication.run(RideswebsocketApplication.class, args);
+		log.info("--------------------向redis添加本服务器--------------------");
+//		ConfigurableApplicationContext context=SpringApplication.run(RideswebsocketApplication.class, args);
+		RedisUtil redisUtil=new RedisUtil();
+		String ip=env.getProperty("server.ip")+":"+env.getProperty("server.port");
+		List<Object> objects=redisUtil.lGet("service",0,-1);
+		boolean b=false;
+		for (Object o:objects){
+			if (ip.equals(String.valueOf(o))){
+				b=true;
+			}
+		}
+		if (b){
+			log.info("--------------------服务器已存在redis--------------------");
+		}else if (redisUtil.lSet("service",ip)){
+			log.info("--------------------redis添加本服务器成功--------------------");
+		}else {
+			log.info("--------------------redis添加本服务器失败--------------------");
+		}
+	}
+
 
 }

@@ -1,6 +1,7 @@
 package com.example.rideswebsocket.testController;
 
 import com.alibaba.fastjson.JSONObject;
+import com.example.rideswebsocket.util.OkHttpUtils;
 import com.example.rideswebsocket.util.RedisUtil;
 import com.example.rideswebsocket.webSocket.WebSocket;
 import org.apache.commons.logging.Log;
@@ -9,13 +10,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.text.Format;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 
 @Controller
@@ -97,4 +103,26 @@ public class TestController {
         return "";
     }
 
+    @RequestMapping("okHttpTest")
+    @ResponseBody
+    public String okHttpTest(){
+        return OkHttpUtils.get("http://www.baidu.com");
+    }
+
+
+//    @Test
+//    public void test(){
+//        System.out.println(UUID.randomUUID().toString().replaceAll("-",""));
+//        JSONObject jsonObject=new JSONObject();
+//        jsonObject.put("data","666");
+//        OkHttpUtils.postJsonParams("http://"+String.valueOf(o)+"/",jsonObject.toJSONString());
+//    }
+
+    @RequestMapping(value = "websocketSend",method = RequestMethod.POST)
+    @ResponseBody
+    public String websocketSend(@RequestBody JSONObject jsonObject){
+        log.info("获取请求请求的数据："+jsonObject.toString());
+        WebSocket.onSend(jsonObject.getString("name")+"发送："+jsonObject.getString("message"));
+        return "";
+    }
 }
