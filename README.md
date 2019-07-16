@@ -1,2 +1,8 @@
 # rideswebsocket
-websocket基础框架
+基于rides的websocket集群方案
+
+#使用技术
+1.websockt 
+2.rides
+3.okhttp3
+
