@@ -23,7 +23,7 @@
     if ('WebSocket' in window) {
         //需要注意URL的格式,以ws:开头的
         var url=document.getElementById("webSocketUrl").value;
-        webSocket = new WebSocket(url,);
+        webSocket = new WebSocket(url);
     }
     else {
         alert('当前浏览器不支持WebSocket')

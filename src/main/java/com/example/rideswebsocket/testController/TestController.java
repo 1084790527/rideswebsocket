@@ -14,14 +14,18 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.method.HandlerMethod;
+import org.springframework.web.servlet.mvc.condition.PatternsRequestCondition;
+import org.springframework.web.servlet.mvc.condition.RequestMethodsRequestCondition;
+import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
+import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
 import javax.servlet.http.HttpServletRequest;
-import java.text.Format;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
-import java.util.UUID;
+import java.util.Map;
 
 
 @Controller
@@ -48,8 +52,8 @@ public class TestController {
 //        log.info("post:"+post);
         String name=request.getParameter("name");
 //        log.info("ControllerName:"+name);
-        model.addAttribute("socketUrl","ws://127.0.0.1:"+post+"/webSocket/"+name+"/"+ip+"/"+post);
-        return "webSoket";
+        model.addAttribute("socketUrl","ws://"+ip+":"+post+"/webSocket/"+name+"/"+ip+"/"+post);
+        return "webSocket/webSocket";
     }
 
     @RequestMapping("redis")
@@ -125,4 +129,5 @@ public class TestController {
         WebSocket.onSend(jsonObject.getString("name")+"发送："+jsonObject.getString("message"));
         return "";
     }
+
 }

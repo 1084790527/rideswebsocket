@@ -1,18 +1,32 @@
 package com.example.rideswebsocket.bean;
 
+//import lombok.*;
+//
+//@ToString
+//@Data
+//@AllArgsConstructor
+//@NoArgsConstructor
 public class SocketUserData {
     private String serviceIp;
     private String servicePost;
     private String name;
 
-    public SocketUserData(){
-
+    public SocketUserData() {
     }
 
-    public SocketUserData(String serviceIp,String servicePost,String name){
-        this.serviceIp=serviceIp;
-        this.servicePost=servicePost;
+    public SocketUserData(String ip, String post, String name) {
+        this.servicePost=post;
         this.name=name;
+        this.serviceIp=ip;
+    }
+
+    @Override
+    public String toString() {
+        return "SocketUserData{" +
+                "serviceIp='" + serviceIp + '\'' +
+                ", servicePost='" + servicePost + '\'' +
+                ", name='" + name + '\'' +
+                '}';
     }
 
     public String getServiceIp() {
