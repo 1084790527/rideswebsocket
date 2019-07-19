@@ -3,6 +3,8 @@ package com.example.rideswebsocket.mq;
 
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.rocketmq.client.producer.DefaultMQProducer;
 import org.apache.rocketmq.client.producer.MessageQueueSelector;
 import org.apache.rocketmq.client.producer.SendResult;
@@ -21,6 +23,7 @@ import javax.annotation.PostConstruct;
 
 @Service
 public class RocketMQProvider {
+    private Log log= LogFactory.getLog(RocketMQProvider.class);
     /**
      * 生产者的组名
      */
@@ -63,7 +66,8 @@ public class RocketMQProvider {
                         return mqs.get(index);
                     }
                 },1);
-                System.out.println("发送响应：MsgId:" + result.getMsgId() + "，发送状态:" + result.getSendStatus());
+//                System.out.println("发送响应：MsgId:" + result.getMsgId() + "，发送状态:" + result.getSendStatus());
+                log.info("发送响应：MsgId:" + result.getMsgId() + "，发送状态:" + result.getSendStatus());
                 /**
                  * 发送响应：MsgId:C0A82B68874C18B4AAC25EA1914C0000，发送状态:SEND_OK
                  * 发送响应：MsgId:C0A82B68874C18B4AAC25EA1914C0000，发送状态:SEND_OK
@@ -79,7 +83,8 @@ public class RocketMQProvider {
                  */
             }
             stop.stop();
-            System.out.println("----------------发送十条消息耗时：" + stop.getTotalTimeMillis());
+//            System.out.println("----------------发送十条消息耗时：" + stop.getTotalTimeMillis());
+            log.info("----------------发送十条消息耗时：" + stop.getTotalTimeMillis());
         } catch (Exception e) {
             e.printStackTrace();
         } finally {

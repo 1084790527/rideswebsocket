@@ -3,6 +3,8 @@ package com.example.rideswebsocket.mq;
 
 import javax.annotation.PostConstruct;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.rocketmq.client.consumer.DefaultMQPushConsumer;
 import org.apache.rocketmq.client.consumer.listener.ConsumeConcurrentlyStatus;
 import org.apache.rocketmq.client.consumer.listener.MessageListenerConcurrently;
@@ -18,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class RocketMQConsumer {
+    private Log log= LogFactory.getLog(RocketMQConsumer.class);
     /**
      * 消费者的组名
      */
@@ -48,11 +51,14 @@ public class RocketMQConsumer {
                 try {
                     for (MessageExt messageExt : list) {
 
-                        System.out.println("messageExt: " + messageExt);//输出消息内容
+//                        System.out.println("messageExt: " + messageExt);//输出消息内容
+                        log.info("messageExt: " + messageExt);
+
 
                         String messageBody = new String(messageExt.getBody());
 
-                        System.out.println("消费响应：msgId : " + messageExt.getMsgId() + ",  msgBody : " + messageBody);//输出消息内容
+//                        System.out.println("消费响应：msgId : " + messageExt.getMsgId() + ",  msgBody : " + messageBody);//输出消息内容
+                        log.info("消费响应：msgId : " + messageExt.getMsgId() + ",  msgBody : " + messageBody);
                     }
                     /**
                      * messageExt: MessageExt [queueId=1, storeSize=191, queueOffset=1, sysFlag=0, bornTimestamp=1563497718090, bornHost=/192.168.169.1:62866, storeTimestamp=1563497718091, storeHost=/192.168.169.1:10911, msgId=C0A8A90100002A9F00000000000000BF, commitLogOffset=191, bodyCRC=476929171, reconsumeTimes=0, preparedTransactionOffset=0, toString()=Message{topic='TopicTest', flag=0, properties={MIN_OFFSET=0, MAX_OFFSET=10, CONSUME_START_TIME=1563497859316, UNIQ_KEY=C0A82B688A5018B4AAC25E9C8CFD0000, WAIT=true, TAGS=push}, body=[-27, -113, -111, -23, -128, -127, -26, -74, -120, -26, -127, -81, 45, 45, 45, 45, 122, 104, 105, 115, 104, 101, 110, 103, 45, 45, 45, 45, 45], transactionId='null'}]
