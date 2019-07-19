@@ -8,27 +8,21 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.method.HandlerMethod;
-import org.springframework.web.servlet.mvc.condition.PatternsRequestCondition;
-import org.springframework.web.servlet.mvc.condition.RequestMethodsRequestCondition;
-import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
-import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 
 @Controller
+//@PropertySource("classpath:application.properties")
 public class TestController {
 
     private Log log= LogFactory.getLog(TestController.class);
@@ -37,7 +31,7 @@ public class TestController {
     private RedisUtil redisUtil;
 
     @Value("${server.port}")
-    private String post;
+    private String port;
 
     @Value("${server.ip}")
     private String ip;
@@ -52,7 +46,7 @@ public class TestController {
 //        log.info("post:"+post);
         String name=request.getParameter("name");
 //        log.info("ControllerName:"+name);
-        model.addAttribute("socketUrl","ws://"+ip+":"+post+"/webSocket/"+name+"/"+ip+"/"+post);
+        model.addAttribute("socketUrl","ws://"+ip+":"+port+"/webSocket/"+name+"/"+ip+"/"+port);
         return "webSocket/webSocket";
     }
 
