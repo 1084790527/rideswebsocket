@@ -3,7 +3,7 @@ package com.example.rideswebsocket.webSocket;
 import com.alibaba.fastjson.JSONObject;
 import com.example.rideswebsocket.bean.SocketUserData;
 import com.example.rideswebsocket.util.OkHttpUtils;
-import com.example.rideswebsocket.util.RedisUtil;
+import com.example.rideswebsocket.util.RedisUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Component;
@@ -26,7 +26,7 @@ public class WebSocket {
     private static Log log= LogFactory.getLog(WebSocket.class);
 
 //    @Autowired
-    private static RedisUtil redisUtil=new RedisUtil();
+    private static RedisUtils redisUtil=new RedisUtils();
 
 //    private static RedisUtil(RedisUtil redisUtil){
 //        WebSocket.redisUtil=redisUtil;

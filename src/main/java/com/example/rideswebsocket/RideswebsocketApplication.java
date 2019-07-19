@@ -1,18 +1,12 @@
 package com.example.rideswebsocket;
 
-import com.example.rideswebsocket.util.RedisUtil;
+import com.example.rideswebsocket.util.RedisUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.env.Environment;
-import org.springframework.data.redis.core.RedisTemplate;
 
 import java.util.List;
 
@@ -37,7 +31,7 @@ public class RideswebsocketApplication {
 		SpringApplication.run(RideswebsocketApplication.class, args);
 		log.info("--------------------向redis添加本服务器--------------------");
 //		ConfigurableApplicationContext context=SpringApplication.run(RideswebsocketApplication.class, args);
-		RedisUtil redisUtil=new RedisUtil();
+		RedisUtils redisUtil=new RedisUtils();
 		String ip=env.getProperty("server.ip")+":"+env.getProperty("server.port");
 		List<Object> objects=redisUtil.lGet("service",0,-1);
 		boolean b=false;

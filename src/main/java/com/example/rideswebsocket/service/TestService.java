@@ -24,13 +24,16 @@ public class TestService {
     public int add(){
         Map<String,String> userMap=new HashMap<>();
         userMap.put("name","mmm");
-        int i=testMapper.installUserData(userMap);
+        TestUserData data=new TestUserData();
+        data.setName("ppp");
+        Integer i=testMapper.installUserData(data);
         log.info(i);
-        int a = 1 / 0; //模拟故障
-        userMap.put("name","ccc");
-        i=testMapper.installUserData(userMap);
-        log.info(i);
-        return 1;
+        log.info(data.toString()); //返回添加数据库的id  TestUserData{id='29', name='ppp'}
+//        int a = 1 / 0; //模拟故障
+//        userMap.put("name","ccc");
+//        i=testMapper.installUserData(userMap);
+//        log.info(i);
+        return Integer.parseInt(data.getId());
     }
 
     public List<TestUserData> selectUserDataList() {

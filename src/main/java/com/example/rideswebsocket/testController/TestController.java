@@ -2,13 +2,12 @@ package com.example.rideswebsocket.testController;
 
 import com.alibaba.fastjson.JSONObject;
 import com.example.rideswebsocket.util.OkHttpUtils;
-import com.example.rideswebsocket.util.RedisUtil;
+import com.example.rideswebsocket.util.RedisUtils;
 import com.example.rideswebsocket.webSocket.WebSocket;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,7 +27,7 @@ public class TestController {
     private Log log= LogFactory.getLog(TestController.class);
 
     @Autowired
-    private RedisUtil redisUtil;
+    private RedisUtils redisUtil;
 
     @Value("${server.port}")
     private String port;
