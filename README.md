@@ -6,4 +6,5 @@
 2.rides
 3.okhttp3
 4.rocketmq
-5..log4j
+5.log4j
+6.shiro 还未实现
