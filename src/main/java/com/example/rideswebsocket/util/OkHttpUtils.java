@@ -1,8 +1,10 @@
 package com.example.rideswebsocket.util;
 
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import okhttp3.FormBody;
 import okhttp3.MediaType;
@@ -15,6 +17,8 @@ import okhttp3.Response;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
+import javax.servlet.http.HttpServletRequest;
 
 public class OkHttpUtils {
 
@@ -167,5 +171,21 @@ public class OkHttpUtils {
         return execNewCall(request);
     }
 
+    public static final JSONObject getRequestParams(HttpServletRequest request) {
+        Map<String,String> params = new HashMap<String,String>();
+        Map<String,String[]> requestParams = request.getParameterMap();
+        for (Iterator<String> iter = requestParams.keySet().iterator(); iter.hasNext();) {
+            String name = iter.next();
+            String[] values = requestParams.get(name);
+            String valueStr = "";
+            for (int i = 0; i < values.length; i++) {
+                String vStr = "";
+                vStr = values[i];
+                valueStr = (i == values.length - 1) ? valueStr + vStr : valueStr + values[i] + ",";
+            }
+            params.put(name, valueStr);
+        }
+        return JSON.parseObject(JSON.toJSONString(params));
+    }
 }
 

@@ -2,7 +2,7 @@ function registered() {
     var name=$('#registeredName').val();
     var password=$('#registeredPassword').val();
     var twoPassword=$('#registeredTwePassword').val();
-    var phone=$('#phone').val();
+    var phone=$('#regPhone').val();
     if(name==null||name==""){
         alert("用户名不可以为空！");
     }else if(phone==null||phone==''){
@@ -20,9 +20,14 @@ function registered() {
             contentType : "application/json;charset=utf-8",
             data : JSON.stringify({'name' : name , 'password' : password , 'phone' : phone}),
             dataType : "json",
-            success : function (message) {
-                var res=JSON.stringify(message);
-                alert("提交成功"+res);
+            success : function (data) {
+                var res=JSON.parse(JSON.stringify(data));
+                if(res.status == '0000'){
+                    alert(res.msg);
+
+                }else {
+                    alert(res.msg);
+                }
             },
             error : function (message) {
                 alert("提交失败"+JSON.stringify(message));

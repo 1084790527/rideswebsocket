@@ -25,7 +25,8 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils  {
     public static final String DAYTIME_START = "00:00:00";
     public static final String DAYTIME_END = "23:59:59";
 
-    private static final String[] FORMATS = {"yyyy-MM-dd", "yyyy-MM-dd HH:mm",
+    private static final String[] FORMATS =
+            {"yyyy-MM-dd", "yyyy-MM-dd HH:mm",
             "yyyy-MM-dd HH:mm:ss", "HH:mm", "HH:mm:ss", "yyyy-MM",
             "yyyy-MM-dd HH:mm:ss.S"};
 
