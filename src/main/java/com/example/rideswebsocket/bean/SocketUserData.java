@@ -11,9 +11,6 @@ public class SocketUserData {
     private String servicePost;
     private String name;
 
-    public SocketUserData() {
-    }
-
     public SocketUserData(String ip, String post, String name) {
         this.servicePost=post;
         this.name=name;

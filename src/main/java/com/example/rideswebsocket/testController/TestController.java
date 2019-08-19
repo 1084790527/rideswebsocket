@@ -1,11 +1,14 @@
 package com.example.rideswebsocket.testController;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.example.rideswebsocket.bean.TestUserData;
 import com.example.rideswebsocket.util.OkHttpUtils;
 import com.example.rideswebsocket.util.RedisUtils;
 import com.example.rideswebsocket.webSocket.WebSocket;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -16,8 +19,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 
 @Controller
@@ -115,12 +118,63 @@ public class TestController {
 //        OkHttpUtils.postJsonParams("http://"+String.valueOf(o)+"/",jsonObject.toJSONString());
 //    }
 
-    @RequestMapping(value = "websocketSend",method = RequestMethod.POST)
-    @ResponseBody
-    public String websocketSend(@RequestBody JSONObject jsonObject){
-        log.info("获取请求请求的数据："+jsonObject.toString());
-        WebSocket.onSend(jsonObject.getString("name")+"发送："+jsonObject.getString("message"));
-        return "";
+//    更改使用RMQ
+//    @RequestMapping(value = "websocketSend",method = RequestMethod.POST)
+//    @ResponseBody
+//    public String websocketSend(@RequestBody JSONObject jsonObject){
+//
+//        log.info("获取请求请求的数据："+jsonObject.toString());
+//        WebSocket.onSend(jsonObject.getString("name")+"发送："+jsonObject.getString("message"));
+//
+//        Map<String ,String> map=new ConcurrentHashMap<>();
+//        map.put("","");
+//
+//
+//        return "";
+//    }
+
+
+    @Test
+    public void tttt() throws InterruptedException {
+        for (int i=0;i<10;i++){
+            int finalI = i;
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+//                        tt tt1=new tt();
+////                        tt1.txt(finalI);
+//                        tt.txt(finalI);
+                        synchronized (tt.class){
+//                            tt tt1=new tt();
+//                            tt1.txt(finalI);
+                            tt.txt(finalI);
+                        }
+//                        tt.txt(finalI);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }).start();
+        }
+
+        Thread.sleep(10000000);
     }
 
+    public static void txt(int i) throws InterruptedException {
+        System.out.println("----------"+i+"--------");
+        Thread.sleep(1000);
+        System.out.println(i);
+        System.out.println("---------"+i+"---------");
+    }
+
+
+}
+class  tt{
+    public static void txt(int i) throws InterruptedException {
+        System.out.println("----------"+i+"--------");
+        Thread.sleep(1000);
+        System.out.println(i);
+        System.out.println("---------"+i+"---------");
+    }
 }

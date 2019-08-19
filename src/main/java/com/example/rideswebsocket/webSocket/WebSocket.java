@@ -2,10 +2,12 @@ package com.example.rideswebsocket.webSocket;
 
 import com.alibaba.fastjson.JSONObject;
 import com.example.rideswebsocket.bean.SocketUserData;
+import com.example.rideswebsocket.service.SocketRMQService;
 import com.example.rideswebsocket.util.OkHttpUtils;
 import com.example.rideswebsocket.util.RedisUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.websocket.*;
@@ -13,7 +15,9 @@ import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArraySet;
 
 /**
@@ -36,7 +40,8 @@ public class WebSocket {
      * concurrent包的线程安全Set，用来存放每个客户端对应的MyWebSocket对象。
      * 若要实现服务端与单一客户端通信的话，可以使用Map来存放，其中Key可以为用户标识
      */
-    private static CopyOnWriteArraySet<WebSocket> webSocketSet=new CopyOnWriteArraySet<>();
+//    private static CopyOnWriteArraySet<WebSocket> webSocketSet=new CopyOnWriteArraySet<>();
+    private static Map<String,WebSocket> socketMap=new ConcurrentHashMap<>();
 
 
     //静态变量，用来记录当前在线连接数。应该把它设计成线程安全的。
@@ -54,6 +59,8 @@ public class WebSocket {
 
 
 
+
+
     /**
      * 连接建立成功调用的方法
      * @param session  可选的参数。session为与某个客户端的连接会话，需要通过它来给客户端发送数据
@@ -63,24 +70,43 @@ public class WebSocket {
 //        log.info("webSocketName:"+name);
         this.session = session;
         this.name=name;
-        webSocketSet.add(this); //加入set中
+//        webSocketSet.add(this); //加入set中
+        socketMap.put(name,this);
 //        addOnlineCount(); //在线数加1
 //        log.info("ip:"+ip+",post:"+post);
 
         //判断是否以存在
-        List<Object> list=redisUtil.lGet("webSocket",0,-1);
-        for (Object o:list){
-//            log.info(jsonObject.toString());
-            SocketUserData userData=JSONObject.parseObject(String.valueOf(o),SocketUserData.class);
-            if (name.equals(userData.getName())){
-//                log.info(JSONObject.toJSONString(userData));
-                redisUtil.lRemove("webSocket",1,JSONObject.toJSONString(userData));
-            }
-        }
-
+//        List<Object> list=redisUtil.lGet("webSocket",0,-1);
+//        for (Object o:list){
+////            log.info(jsonObject.toString());
+//            SocketUserData userData=JSONObject.parseObject(String.valueOf(o),SocketUserData.class);
+//            if (name.equals(userData.getName())){
+////                log.info(JSONObject.toJSONString(userData));
+//                redisUtil.lRemove("webSocket",1,JSONObject.toJSONString(userData));
+//            }
+//        }
         socketUserData=new SocketUserData(ip,post,name);
-        redisUtil.lSet("webSocket",JSONObject.toJSONString(socketUserData));
-        log.info(name+"连接加入！当前在线人数为" + getOnlineCount());
+//        if (!redisUtil.hasKey(name)){
+        boolean b=redisUtil.set(name,JSONObject.toJSONString(socketUserData));
+        if (b){
+            log.info("redis添加成功："+socketUserData.toString());
+        }else {
+            log.info("redis添加失败"+socketUserData.toString());
+        }
+//        }else {
+//            JSONObject object = JSONObject.parseObject((String) redisUtil.get(name));
+//            if (ip.equals(object.getString("ip"))){
+//
+//            }
+            //直接覆盖，不用删除
+//            redisUtil.del(name);
+//            redisUtil.set(name,JSONObject.toJSONString(socketUserData));
+//        }
+//        redisUtil.lSet("webSocket",JSONObject.toJSONString(socketUserData));
+
+
+//        log.info(name+"连接加入！当前在线人数为" + getOnlineCount());
+        log.info(name+"连接加入！");
     }
 
     /**
@@ -88,11 +114,14 @@ public class WebSocket {
      */
     @OnClose
     public void onClose() {
-        webSocketSet.remove(this); //从set中删除
+//        webSocketSet.remove(this); //从set中删除
+        socketMap.remove(name);
 //        subOnlineCount(); //在线数减1
         log.info(JSONObject.toJSONString(socketUserData));
-        redisUtil.lRemove("webSocket",-1,JSONObject.toJSONString(socketUserData));
-        log.info(name+"关闭！当前在线人数为" + getOnlineCount());
+//        redisUtil.lRemove("webSocket",-1,JSONObject.toJSONString(socketUserData));
+        redisUtil.del(name);
+//        log.info(name+"关闭！当前在线人数为" + getOnlineCount());
+        log.info(name+"关闭连接");
     }
 
     /**
@@ -102,7 +131,7 @@ public class WebSocket {
      */
     @OnMessage
     public void onMessage(String message, Session session) {
-//        message="来自"+name+"的消息:" + message;
+        message="来自"+name+"的消息:" + message;
 //        log.info(message);
 //        //群发消息
 //        for (WebSocket item : webSocketSet) {
@@ -119,13 +148,13 @@ public class WebSocket {
             JSONObject jsonObject=new JSONObject();
             jsonObject.put("name",this.name);
             jsonObject.put("message",message);
-            OkHttpUtils.postJsonParams("http://"+String.valueOf(o)+"/websocketSend",jsonObject.toJSONString());
+            SocketRMQService.defaultMQProducer(String.valueOf(o),name,jsonObject.toJSONString());
         }
-
     }
 
+    //群发
     public static synchronized void onSend(String message){
-        for (WebSocket item : webSocketSet) {
+        for (WebSocket item : socketMap.values()) {
             try {
                 item.sendMessage(message);
             } catch (IOException e) {
@@ -155,15 +184,16 @@ public class WebSocket {
      */
     @OnError
     public void onError(Session session, Throwable error) {
-        redisUtil.lRemove("webSocket",-1,JSONObject.toJSONString(socketUserData));
-        log.debug("发生错误");
+//        redisUtil.lRemove("webSocket",-1,JSONObject.toJSONString(socketUserData));
+        redisUtil.del(name);
+        log.debug("发生错误:"+name);
         error.printStackTrace();
     }
 
-
-    public static synchronized int getOnlineCount() {
-        return (int)redisUtil.lGetListSize("webSocket");
-    }
+//    取消人数
+//    public static synchronized int getOnlineCount() {
+//        return (int)redisUtil.lGetListSize("webSocket");
+//    }
 
 //    public static synchronized void addOnlineCount() {
 //        onlineCount++;

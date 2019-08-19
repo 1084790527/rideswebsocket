@@ -17,15 +17,15 @@ public class MQController {
     @Autowired
     RocketMQConsumer rocketMQConsumer;
 
-    @RequestMapping("/MQ")
-    public String testMq() {
-        rocketMQProvider.defaultMQProducer();
-        return null;
-    }
-
-    @RequestMapping("MQQ")
-    public String testMqq(){
-        rocketMQConsumer.defaultMQPushConsumer();
-        return null;
-    }
+//    @RequestMapping("/MQ")
+//    public String testMq() {
+//        rocketMQProvider.defaultMQProducer();
+//        return null;
+//    }
+//
+//    @RequestMapping("MQQ")
+//    public String testMqq(){
+//        rocketMQConsumer.defaultMQPushConsumer();
+//        return null;
+//    }
 }
