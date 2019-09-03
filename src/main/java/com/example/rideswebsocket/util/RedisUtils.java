@@ -16,18 +16,18 @@ import java.util.concurrent.TimeUnit;
 public class RedisUtils {
 
 //    @Autowired
-    private static RedisTemplate redisTemplate=new RedisTemplate();
+    private static RedisTemplate redisTemplate;
 
     @Autowired
     public void setRedisTemplate(RedisTemplate redisTemplate) {
         this.redisTemplate = redisTemplate;
     }
 
-//    public RedisUtil(){
-//        if (redisTemplate==null){
-//            redisTemplate=new RedisTemplate();
-//        }
-//    }
+    public RedisUtils(){
+        if (redisTemplate==null){
+            redisTemplate=new RedisTemplate();
+        }
+    }
 
     /**
      * 指定缓存失效时间

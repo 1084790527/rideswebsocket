@@ -90,7 +90,7 @@ public class SocketRMQService {
 
 //                        System.out.println("消费响应：msgId : " + messageExt.getMsgId() + ",  msgBody : " + messageBody);//输出消息内容
                         log.info("消费响应：msgId : " + messageExt.getMsgId() +", key: "+messageExt.getKeys()+ ",  msgBody : " + messageBody);
-                        WebSocket.onSend(messageBody);
+                        WebSocket.onSendMass(messageBody);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -108,7 +108,7 @@ public class SocketRMQService {
     //发布socket消息
 //    @PostConstruct //@PostContruct是spring框架的注解，在方法上加该注解会在项目启动的时候执行该方法，也可以理解为在spring容器初始化的时候执行该方法。
     public static void defaultMQProducer(String service,String key,String body) {
-        log.info("----------------"+producerGroup+"---------------"+namesrvAddr);
+//        log.info("----------------"+producerGroup+"---------------"+namesrvAddr);
         DefaultMQProducer producer= new DefaultMQProducer(producerGroup);
         //指定NameServer地址，多个地址以 ; 隔开
         producer.setNamesrvAddr(namesrvAddr);

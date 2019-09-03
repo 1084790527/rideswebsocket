@@ -24,8 +24,7 @@
         //需要注意URL的格式,以ws:开头的
         var url=document.getElementById("webSocketUrl").value;
         webSocket = new WebSocket(url);
-    }
-    else {
+    }else {
         alert('当前浏览器不支持WebSocket')
     }
 
@@ -41,7 +40,13 @@
 
     //接收到消息的回调方法
     webSocket.onmessage = function (event) {
+        // alert(event.data);
         setMessageInnerHTML(event.data);
+        if ("close" == event.data){
+            // alert("强制被迫下线");
+            closeWebSocket();
+            setMessageInnerHTML("强制被迫下线");
+        }
     }
 
     //连接关闭的回调方法

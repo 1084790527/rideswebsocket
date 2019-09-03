@@ -299,6 +299,26 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils  {
         return months;
     }
 
+    public static String getDate() {
+        return new SimpleDateFormat("yyyyMMdd").format(new Date());
+    }
+    public static String getDate(Date date) {
+        return new SimpleDateFormat("yyyyMMdd").format(date);
+    }
+    public static String getFormateDate() {
+        return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+    }
+    public static String getFormateDate(Date date) {
+        return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(date);
+    }
+    public static String getLongDate() {
+        return new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+    }
+    public static String getLongDate(Date date) {
+        return new SimpleDateFormat("yyyyMMddHHmmss").format(date);
+    }
+
+
     public static void main(String[] args) throws Exception {
 //        String strType = "2018-06-20 12:00:00";
 //        String format = "yyyy-MM-dd HH:mm:ss";

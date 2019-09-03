@@ -3,22 +3,20 @@ package com.example.rideswebsocket.webSocket;
 import com.alibaba.fastjson.JSONObject;
 import com.example.rideswebsocket.bean.SocketUserData;
 import com.example.rideswebsocket.service.SocketRMQService;
-import com.example.rideswebsocket.util.OkHttpUtils;
 import com.example.rideswebsocket.util.RedisUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CopyOnWriteArraySet;
 
 /**
  * @ServerEndpoint 注解是一个类层次的注解，它的功能主要是将目前的类定义成一个websocket服务器端,
@@ -71,6 +69,17 @@ public class WebSocket {
         this.session = session;
         this.name=name;
 //        webSocketSet.add(this); //加入set中
+        //判断map是否以存在????            处理有问题，删除不一定在本台上
+        WebSocket webSocket=socketMap.get(name);
+        if (webSocket!=null){
+            try {
+                webSocket.sendMessage("close");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            //强制下线
+            webSocket.onClose();
+        }
         socketMap.put(name,this);
 //        addOnlineCount(); //在线数加1
 //        log.info("ip:"+ip+",post:"+post);
@@ -153,7 +162,7 @@ public class WebSocket {
     }
 
     //群发
-    public static synchronized void onSend(String message){
+    public static synchronized void onSendMass(String message){
         for (WebSocket item : socketMap.values()) {
             try {
                 item.sendMessage(message);
@@ -161,6 +170,14 @@ public class WebSocket {
                 e.printStackTrace();
                 continue;
             }
+        }
+    }
+
+    public static synchronized void onSendPeer(String toName,String message){
+        try {
+            socketMap.get(toName).sendMessage(message);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

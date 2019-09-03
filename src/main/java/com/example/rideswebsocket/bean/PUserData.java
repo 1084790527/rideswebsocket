@@ -5,7 +5,6 @@ import java.util.Date;
 public class PUserData {
     private int id;
     private String name;
-    private String phone;
     private int roleType;
     private String loginName;
     private String loginPassword;
@@ -20,7 +19,6 @@ public class PUserData {
         return "PUserData{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", phone='" + phone + '\'' +
                 ", roleType=" + roleType +
                 ", loginName='" + loginName + '\'' +
                 ", loginPassword='" + loginPassword + '\'' +
@@ -46,14 +44,6 @@ public class PUserData {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
     }
 
     public int getRoleType() {

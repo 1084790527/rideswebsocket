@@ -16,14 +16,12 @@ public class LoginUserInfo implements Serializable {
 
 	private int id;
 	private String name;
-	private String phone;
 	private int roleType;
 	private String loginName;
 
 	public LoginUserInfo(PUserData pUserData) {
 		this.id = pUserData.getId();
 		this.name = pUserData.getName();
-		this.phone = pUserData.getPhone();
 		this.roleType = pUserData.getRoleType();
 		this.loginName = pUserData.getLoginName();
 	}
@@ -33,7 +31,6 @@ public class LoginUserInfo implements Serializable {
 		return "LoginUserInfo{" +
 				"id=" + id +
 				", name='" + name + '\'' +
-				", phone='" + phone + '\'' +
 				", roleType=" + roleType +
 				", loginName='" + loginName + '\'' +
 				'}';
@@ -52,14 +49,6 @@ public class LoginUserInfo implements Serializable {
 		LoginUserInfo userInfo = threadLocal.get();
 		if (null != userInfo && userInfo.getNames() != null) {
 			return userInfo.getNames();
-		}
-		return null;
-	}
-
-	public static String getPhone(){
-		LoginUserInfo userInfo = threadLocal.get();
-		if (null != userInfo && userInfo.getPhones() != null) {
-			return userInfo.getPhones();
 		}
 		return null;
 	}
@@ -86,10 +75,6 @@ public class LoginUserInfo implements Serializable {
 
 	public String getNames() {
 		return name;
-	}
-
-	public String getPhones() {
-		return phone;
 	}
 
 	public int getRoleTypes() {

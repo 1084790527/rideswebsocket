@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.rideswebsocket.mapper.LoginMapper" >
+
+
+    <select id="selectPUserData" resultType="com.example.rideswebsocket.bean.PUserData" parameterType="string">
+        SELECT
+            p.id AS id, p.`name` AS `name`, p.role_type AS roleType, p.login_name AS loginName,
+            p.login_password AS loginPassword, p.`status` AS `status`, p.cerate_at AS cerateAt,
+            p.update_at AS updateAt, p.update_by AS updateBy, p.error_cnt AS errorCnt
+        FROM
+            p_user AS p
+        WHERE
+            p.login_name = #{username}
+    </select>
+</mapper>

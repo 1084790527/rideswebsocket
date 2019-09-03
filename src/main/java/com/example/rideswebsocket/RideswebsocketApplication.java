@@ -1,5 +1,6 @@
 package com.example.rideswebsocket;
 
+//import com.alibaba.dubbo.spring.boot.annotation.EnableDubboConfiguration;
 import com.example.rideswebsocket.util.RedisUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -10,6 +11,8 @@ import org.springframework.core.env.Environment;
 
 import java.util.List;
 
+//@EnableCaching
+//@EnableDubboConfiguration
 @SpringBootApplication
 public class RideswebsocketApplication {
 	private static Log log= LogFactory.getLog(RideswebsocketApplication.class);
