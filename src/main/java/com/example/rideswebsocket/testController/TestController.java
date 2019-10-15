@@ -1,10 +1,10 @@
 package com.example.rideswebsocket.testController;
 
-//import com.alibaba.dubbo.config.annotation.Reference;
+import com.alibaba.dubbo.config.annotation.Reference;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.example.dubbo_service_dome1.service.TestService;
 import com.example.rideswebsocket.bean.PUserData;
-import com.example.rideswebsocket.dubbo.TestService;
 import com.example.rideswebsocket.util.OkHttpUtils;
 import com.example.rideswebsocket.util.RedisUtils;
 import com.example.rideswebsocket.webSocket.WebSocket;
@@ -28,7 +28,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
@@ -48,14 +50,16 @@ public class TestController {
     @Value("${server.ip}")
     private String ip;
 
-//    @Reference(version = "1.0.0",timeout = 300)
-//    private TestService testService;
+//    @Reference
+//    TestService testService;
 
     @RequestMapping(value = "/" ,method = RequestMethod.GET)
+    @ResponseBody
     public String hello(){
-//        log.info("testDubbo");
-//        testService.testDubbo();
-        return "hello";
+        log.info("testDubbo");
+
+//        return testService.dubbo("000");
+        return "dsdsd";
     }
 
     @RequestMapping(value = "webSocket")
@@ -184,13 +188,20 @@ public class TestController {
 
     }
 
-//    @Test
-//    public void test(){
+    @Test
+    public void test(){
 //        System.out.println(UUID.randomUUID().toString().replaceAll("-",""));
 //        JSONObject jsonObject=new JSONObject();
 //        jsonObject.put("data","666");
 //        OkHttpUtils.postJsonParams("http://"+String.valueOf(o)+"/",jsonObject.toJSONString());
-//    }
+        System.out.println(new Date().getTime());
+
+        LocalDate localDate = LocalDate.now();
+        Timestamp timestamp= Timestamp.valueOf(LocalDateTime.now());
+        System.out.println(timestamp.getTime());
+
+        System.out.println(String.valueOf((int) (System.currentTimeMillis() / 1000)));
+    }
 
 //    更改使用RMQ
 //    @RequestMapping(value = "websocketSend",method = RequestMethod.POST)

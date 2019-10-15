@@ -1,4 +1,4 @@
-package com.example.rideswebsocket.dubbo;
+package com.example.dubbo_service_dome1.service;
 
 public interface TestService {
 
