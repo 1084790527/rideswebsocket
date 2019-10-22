@@ -24,10 +24,10 @@ import sun.misc.IOUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
+import java.nio.ByteBuffer;
+import java.nio.CharBuffer;
+import java.nio.charset.Charset;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -263,10 +263,11 @@ public class TestController {
     }
 
     public static void txt(int i) throws InterruptedException {
-        System.out.println("----------"+i+"--------");
-        Thread.sleep(1000);
-        System.out.println(i);
-        System.out.println("---------"+i+"---------");
+//        System.out.println("----------"+i+"--------");
+//        Thread.sleep(1000);
+//        System.out.println(i);
+//        System.out.println("---------"+i+"---------");
+
     }
 
     @Test
@@ -392,6 +393,58 @@ public class TestController {
         pUserData.setLoginName("rrr");
     }
 
+    @Test
+    public void ss() throws IOException {
+//        String s="0123456789abcdefghijklmnopqrstuvwxyz`~!@#$%^&*()-_=+[{]}\\|;:'\",<.>/?";
+        String s="0123456789";
+        char[] chars=s.toCharArray();
+        BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream("e:\\ttt.txt"));
+//        for (char c1:chars){
+        char c1='1';
+            System.out.println("1");
+            for (char c2:chars){
+                System.out.println("2");
+                for (char c3:chars){
+                    System.out.println("3");
+                    for (char c4:chars){
+                        System.out.println("4");
+                        for (char c5:chars){
+                            for (char c6:chars){
+                                for (char c7:chars){
+                                    for (char c8:chars){
+                                        char[] c={c1,c2,c3,c4,c5,c6,c7,c8};
+                                        out.write(getBytes(c));
+                                        out.write("\r\n".getBytes());
+//                                        for (char c9:chars){
+//                                            for (char c10:chars){
+//                                                for (char c11:chars){
+//                                                    char[] c={c1,c2,c3,c4,c5,c6,c7,c8};
+//                                                    out.write(getBytes(c));
+//                                                    out.write("\r\n".getBytes());
+//                                                }
+//                                            }
+//                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+            }
+//        }
+        out.flush();
+        out.close();
+        System.out.println("完成");
+    }
+    public static byte[] getBytes(char[] chars) {
+        Charset cs = Charset.forName("UTF-8");
+        CharBuffer cb = CharBuffer.allocate(chars.length);
+        cb.put(chars);
+        cb.flip();
+        ByteBuffer bb = cs.encode(cb);
+        return bb.array();
+    }
 }
 //class  tt{
 //    public static void txt(int i) throws InterruptedException {
